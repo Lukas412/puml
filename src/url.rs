@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use std::fs::read_to_string;
 use std::path::Path;
 
@@ -46,7 +45,7 @@ impl PumlUrlCreator {
     fn create_url(&self, path: impl AsRef<Path>, url_type: UrlType) -> eyre::Result<String> {
         let url_type = url_type.as_str();
         let payload = self.encode_file(path)?;
-        Ok(format!("https://localhost:8080/{url_type}/{payload}"))
+        Ok(format!("http://localhost:8080/{url_type}/{payload}"))
     }
 
     fn encode_file(&self, path: impl AsRef<Path>) -> eyre::Result<String> {

@@ -1,6 +1,7 @@
 use std::process;
 
 use clap::{Arg, ArgAction, Command};
+use eyre::Context;
 
 use self::url::PumlUrlCreator;
 
@@ -63,12 +64,10 @@ fn main() -> eyre::Result<()> {
                 url_creator.create_svg_url(file)
             }?;
 
-            const FIREFOX: &str = "C:\\'Program Files'\\'Mozilla Firefox'\\firefox.exe";
-            let command = format!("\"{} -new-tab \\\"{}\\\"\"", FIREFOX, url);
-
-            _ = process::Command::new("powershell.exe")
-                .args(["-Command", &command])
-                .status()?;
+            _ = process::Command::new("ff")
+                .args(["-new-tab", &url])
+                .status()
+                .wrap_err("could not execute firefox command")?;
 
             println!("{}", url);
         }
